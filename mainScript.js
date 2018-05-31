@@ -1,22 +1,322 @@
+/*
+    Author: Volakh Darya
+*/
+
+
 var t1 = 0;
 var tn = 0;
 var procEl;
+var m;
+var p;
+var q;
+
+function createTables(table,mainTable,rows,columns,header)
+{  
+    var body = document.querySelector("body");    
+    var firstTable = document.querySelector("table");
+    var table = document.createElement("table");
+    var height = 100;
+    var width = 150;
+    var newRow = "";
+    var data = ""; 
+    var head = "";
+
+    table.setAttribute("width",width);
+    table.setAttribute("border","1.5px");  
+    table.setAttribute("bordercolor","black"); 
+
+    newRow = document.createElement("tr");    
+    newRow.setAttribute("bgcolor","#FBF0DB");
+
+    head = document.createElement("th");    
+    text = document.createTextNode(header);
+
+    head.setAttribute("colspan",columns);
+    head.appendChild(text);
+    newRow.appendChild(head);
+
+    table.appendChild(newRow);
+
+    if (rows == 1)
+    {
+        newRow = document.createElement("tr");
+        for (var tempCol = 0; tempCol < columns; tempCol++)
+        {
+            data = document.createElement("td");
+            data.id = (header + "." + rows + "." + (tempCol + 1));
+            newRow.appendChild(data);
+            data.setAttribute("height",height);
+        }
+        table.appendChild(newRow);    
+        return mainTable.appendChild(table);
+    }
+
+    else
+    {
+        for (var tempRow = 0 ; tempRow < rows; tempRow++)
+        {
+            newRow = document.createElement("tr");
+            for (var tempCol = 0; tempCol < columns; tempCol++)
+            {
+                data = document.createElement("td");
+                data.id = (header + "." + (tempRow+1) + "." + (tempCol + 1));
+                newRow.appendChild(data);
+                data.setAttribute("height",height);
+            }
+            table.appendChild(newRow);
+        }
+        return mainTable.appendChild(table);
+    }
+   
+}
 
 
-function mainFunc()    //диапазон [-1:1]
+function createTableResults(mainTable)
+{  
+    var body = document.querySelector("body");    
+    var firstTable = document.querySelector("table");
+    var table = document.createElement("table");
+    var rows = 5;
+    var columns = 2;
+    var height = 100;
+    var width = 100;
+    var newRow = "";
+    var data = ""; 
+    var head = "";
+
+    table.setAttribute("width",width);
+    table.setAttribute("border","1.5px");  
+    table.setAttribute("bordercolor","black"); 
+
+    newRow = document.createElement("tr");    
+    newRow.setAttribute("bgcolor","#FBF5DB");
+
+    head = document.createElement("th");    
+    text = document.createTextNode("Результаты");
+
+    head.setAttribute("colspan",columns);
+    head.appendChild(text);
+    newRow.appendChild(head);
+
+    table.appendChild(newRow);
+
+    for (var tempRow = 0 ; tempRow < rows; tempRow++)
+    {
+        newRow = document.createElement("tr");
+        for (var tempCol = 0; tempCol < columns; tempCol++)
+            {
+                data = document.createElement("td");
+                data.id = ("res." + (tempRow + 1) + "." + (tempCol + 1));
+                newRow.appendChild(data);
+                data.setAttribute("height",height);
+            }
+        table.appendChild(newRow);   
+    } 
+    return mainTable.appendChild(table);   
+}
+
+function createTableD(table,mainTable)
+{  
+    var body = document.querySelector("body");    
+    var firstTable = document.querySelector("table");
+    var table = document.createElement("table");
+    var rows = m*p*q;
+    var columns = 4;
+    var height = 60;
+    var width = 300;
+    var newRow = "";
+    var data = ""; 
+    var head = "";
+
+    table.setAttribute("width",width);
+    table.setAttribute("border","1.5px");  
+    table.setAttribute("bordercolor","black"); 
+
+    newRow = document.createElement("tr");    
+    newRow.setAttribute("bgcolor","#FBF0DB");
+
+    head = document.createElement("th");      
+    text = document.createTextNode("D");
+    head.setAttribute("colspan","4");  
+    head.appendChild(text);
+    newRow.appendChild(head);
+
+    table.appendChild(newRow);
+
+    newRow = document.createElement("tr");
+    newRow.setAttribute("bgcolor","#FFDAB9");
+
+    head = document.createElement("th");
+    text = document.createTextNode("k");        
+    head.appendChild(text);
+    newRow.appendChild(head);
+
+    head = document.createElement("th");
+    text = document.createTextNode("i");
+    head.appendChild(text);
+    newRow.appendChild(head);
+
+    head = document.createElement("th");
+    text = document.createTextNode("j");
+    head.appendChild(text);
+    newRow.appendChild(head);
+
+    head = document.createElement("th");
+    text = document.createTextNode("D[k][i][j]");
+    head.appendChild(text);
+    newRow.appendChild(head);
+    
+    table.appendChild(newRow);
+
+    for (var tempRow = 0 ; tempRow < rows; tempRow++)
+    {
+        newRow = document.createElement("tr");
+        for (var tempCol = 0; tempCol < columns; tempCol++)
+        {
+            data = document.createElement("td");
+            data.id = ("D" + "." + (tempRow+1) + "." + (tempCol + 1));
+            newRow.appendChild(data);
+            data.setAttribute("height",height);
+        }
+        table.appendChild(newRow);
+    }
+    return mainTable.appendChild(table);
+}
+
+function createMainTable(A,B,E,D,C,t1,tn,ky,ey,d)
 {
+    var body = document.querySelector("body");
+    var mainTable = document.createElement("mainTable");
+    var row = document.createElement("tr");
+    var data = document.createElement("td");    
+    var firstTable = document.querySelector("mainTable");
+
+   createTables(A,data,p,m,"A");
+   row.appendChild(data);
+
+   data = document.createElement("td");
+   createTables(B,data,m,q,"B");
+   row.appendChild(data);
+
+   data = document.createElement("td");
+   createTables(E,data,1,m,"E");
+   row.appendChild(data);
+
+   data = document.createElement("td");
+   createTableD(D,data);   
+   row.appendChild(data);
+
+   data = document.createElement("td");
+   createTables(C,data,p,q,"C");   
+   row.appendChild(data);
+
+   data = document.createElement("td");
+   createTableResults(data,t1,tn,ky,ey,d);
+   row.appendChild(data);
+   mainTable.appendChild(row);
+
+   body.appendChild(mainTable);
+
+   
+   if (firstTable == null)
+   {
+       return body.appendChild(mainTable);
+   }
+   else
+   {
+       var newTable = body.appendChild(mainTable);
+       return document.body.replaceChild(newTable, firstTable);
+   }
+}
+
+function addResults(t1,tn,ky,e,d)
+{
+    var rows = 5;
+    var masOfHeaders = ["T1","Tn","Ky","e","D"];
+    
+    var masOfResults = [t1,tn,ky,e,d];
+    var tempCol = 0;
+    for (var tempRow = 0; tempRow < rows; tempRow++)
+    {
+        document.getElementById("res." + (tempRow + 1) + "." + (tempCol + 1)).innerHTML = "<b>" + masOfHeaders[tempRow];
+        document.getElementById("res." + (tempRow + 1) + "." + (tempCol + 2)).innerHTML = "<b>" + masOfResults[tempRow];
+        
+    }
+}
+
+function addToTable(matr,header,rows,columns)
+{
+    if (rows == 1)
+    {
+        for (var tempCol = 0; tempCol < columns; tempCol++)
+        {
+            document.getElementById(header + "." + rows + "." + (tempCol + 1)).innerHTML = matr[tempCol];
+        }
+    }
+    else 
+    {
+        for (var tempRow = 0; tempRow < rows; tempRow++)
+        {
+            for (var tempCol = 0; tempCol < columns; tempCol++)
+            {
+                document.getElementById(header + "." + (tempRow + 1) + "." + (tempCol + 1)).innerHTML = matr[tempRow][tempCol];
+            }
+        }
+    }
+}
+
+
+function addToTableD(D)
+{
+    var columns = 0;
+    var rows = 1;
+    for (var tempK = 0; tempK < m; tempK++)
+    {
+        for (var tempI = 0; tempI < p; tempI++)
+        {
+            for (var tempJ = 0; tempJ < q; tempJ++)
+            {
+                document.getElementById("D" + "." + (rows + tempJ) + "." + (columns + 1)).innerHTML = tempK;
+                document.getElementById("D" + "." + (rows + tempJ) + "." + (columns + 2)).innerHTML = tempI;
+                document.getElementById("D" + "." + (rows + tempJ) + "." + (columns + 3)).innerHTML = tempJ;
+                document.getElementById("D" + "." + (rows + tempJ) + "." + (columns + 4)).innerHTML = D[tempK][tempI][tempJ];
+                
+                if (tempJ == q - 1)
+                {
+                    rows += tempJ + 1;
+                    columns = 0;
+                }
+            }
+        }
+    }
+}
+
+function mainFunc()    
+{
+    var regexp = new RegExp();
+    regexp = /([1-9]+)/;
+
     var numbers = document.getElementById("f1");
-    var m = numbers.elements[0].value;
-    var p = numbers.elements[1].value;
-    var q = numbers.elements[2].value;
+
+    for (var index = 0; index < 10; index++)
+    {
+        if (regexp.test(parseInt(numbers.elements[index].value)) == false)
+        {
+            alert("Пожалуйста, заполните все поля натуральными числами!");  
+            return;
+        }
+    }
+    
+    m = numbers.elements[0].value;
+    p = numbers.elements[1].value;
+    q = numbers.elements[2].value;
     procEl = numbers.elements[3].value;
     var timeMod = numbers.elements[4].value;
     var timeDiff = numbers.elements[5].value;
-    var timeSq = numbers.elements[6].value;
-    var timeMult = numbers.elements[7].value;
-    var timeSum = numbers.elements[8].value;
-   
-    console.log(m + " " + p + " " + q + " " + procEl);
+    var timeCompare = numbers.elements[6].value;
+    var timeSq = numbers.elements[7].value;
+    var timeMult = numbers.elements[8].value;
+    var timeSum = numbers.elements[9].value;  
 
     var A = [];
     for (var index1 = 0; index1 < p; index1++)
@@ -43,13 +343,6 @@ function mainFunc()    //диапазон [-1:1]
     {
         E[index] = getRandom().toFixed(3);
     }
-    
-    console.log("A");
-    console.log(A);
-    console.log("B");
-    console.log(B);
-    console.log("E");
-    console.log(E);
 
     var modA = [];
     for (var index1 = 0; index1 < p; index1++)
@@ -61,8 +354,6 @@ function mainFunc()    //диапазон [-1:1]
         }
     }
     getTime(timeMod,p,m);
-    console.log("modA");
-    console.log(modA);
 
     var modB = [];
 
@@ -75,8 +366,6 @@ function mainFunc()    //диапазон [-1:1]
         }
     }
     getTime(timeMod,m,q);
-    console.log("ModB = ");
-    console.log(modB);
     
     var diffAB = [];
     for (var indexK = 0; indexK < m; indexK++)
@@ -92,8 +381,6 @@ function mainFunc()    //диапазон [-1:1]
         }
     }
     getTimeForThree(timeDiff,p,m,q);
-    console.log("diffAB");
-    console.log(diffAB);
 
     var modDiffAB = [];
     for (var indexK = 0; indexK < m; indexK++)
@@ -109,8 +396,6 @@ function mainFunc()    //диапазон [-1:1]
         }
     }
     getTimeForThree(timeMod,p,m,q);
-    console.log("modDiffAB");
-    console.log(modDiffAB);
 
     var D = [];
     var counterTrue = 0;
@@ -136,14 +421,15 @@ function mainFunc()    //диапазон [-1:1]
             }
         }
     }
+
+    console.log(D);
+    getTimeForThree(timeCompare,m,p,q);
     getTimeForThree(timeSq,counterTrue,1,1);
     getTimeForThree(timeSq,counterFalse,1,1);
     getTimeForThree(timeMult,counterFalse,1,1);
-    console.log("D = ");
-    console.log(D);
 
     var C = [];
-    var forSum = 0;
+    var numOfSum = 0;
     for (var indexI = 0; indexI < p; indexI++)
     {  
         C[indexI] = [];
@@ -152,22 +438,35 @@ function mainFunc()    //диапазон [-1:1]
             C[indexI][indexJ] = 0;
             for (var indexK = 0; indexK < m; indexK++)
             {
-                C[indexI][indexJ] = C[indexI][indexJ]+D[indexK][indexI][indexJ];
-                forSum++;
+                var tempC = parseFloat(C[indexI][indexJ]);
+                var tempD = parseFloat(D[indexK][indexI][indexJ]);
+                C[indexI][indexJ] = (tempC + tempD).toFixed(3);
+                tempC = parseFloat(C[indexI][indexJ]);
+                numOfSum++;
             }
         }
     }
-    console.log("SUM = " + forSum);
-    getTimeForThree(timeSum,forSum,1,1);
-    console.log("C = ");
-    console.log(C);
 
-    var ky = t1/tn;
-    var ey = ky/procEl;
+    getTimeForThree(timeSum,numOfSum,1,1);
 
-    console.log("Ky = " + ky);
-    console.log("ey = " + ey);
+    var ky = (t1/tn).toFixed(3);
+    var ey = (ky/procEl).toFixed(3);
 
+    var numOfDiff = m*p*q;
+    var numOfCompare = m*p*q;
+    var numOfMod = p*m + m*q + m*p*q;
+    var numOfSq = m*p*q;
+    var numOfMult = counterFalse;
+    var r = m*p*q;
+    var d = (tn/((numOfSum*timeSum + numOfDiff*timeDiff + numOfMod*timeMod + numOfSq*timeSq + numOfMult*timeMult + numOfCompare*timeCompare)/r)).toFixed(3);
+
+    createMainTable(A,B,E,D,C,t1,tn,ky,ey,d);
+    addToTable(A,"A",p,m);
+    addToTable(B,"B",m,q);    
+    addToTable(E,"E",1,m);
+    addToTableD(D);
+    addToTable(C,"C",p,q);
+    addResults(t1,tn,ky,ey,d);
 }
 
 function getRandom()
@@ -184,8 +483,6 @@ function getTime(time,row, col)
 {
     t1 += time * row * col;
     tn += Math.ceil(time * row * col / procEl);
-    console.log("T1 = " + t1);
-    console.log("Tn = " + tn);
 }
 
 function difference(elem1, elem2)
