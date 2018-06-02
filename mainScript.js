@@ -9,6 +9,9 @@ var procEl;
 var m;
 var p;
 var q;
+var timeSum;
+var numOfSum = 0;
+
 
 function createTables(table,mainTable,rows,columns,header)
 {  
@@ -89,7 +92,7 @@ function createTableResults(mainTable)
     table.setAttribute("bordercolor","black"); 
 
     newRow = document.createElement("tr");    
-    newRow.setAttribute("bgcolor","#FBF5DB");
+    newRow.setAttribute("bgcolor","#FFDAB9");
 
     head = document.createElement("th");    
     text = document.createTextNode("Результаты");
@@ -265,7 +268,6 @@ function addToTable(matr,header,rows,columns)
     }
 }
 
-
 function addToTableD(D)
 {
     var columns = 0;
@@ -316,7 +318,7 @@ function mainFunc()
     var timeCompare = numbers.elements[6].value;
     var timeSq = numbers.elements[7].value;
     var timeMult = numbers.elements[8].value;
-    var timeSum = numbers.elements[9].value;  
+    timeSum = numbers.elements[9].value;  
 
     var A = [];
     for (var index1 = 0; index1 < p; index1++)
@@ -353,7 +355,7 @@ function mainFunc()
             modA[index1][index2] = module(A[index1][index2]);   
         }
     }
-    getTime(timeMod,p,m);
+    getTime(timeMod,p,m,1);
 
     var modB = [];
 
@@ -365,7 +367,7 @@ function mainFunc()
             modB[index1][index2] = module(B[index1][index2]);
         }
     }
-    getTime(timeMod,m,q);
+    getTime(timeMod,m,q,1);
     
     var diffAB = [];
     for (var indexK = 0; indexK < m; indexK++)
@@ -380,7 +382,7 @@ function mainFunc()
             }
         }
     }
-    getTimeForThree(timeDiff,p,m,q);
+    getTime(timeDiff,p,m,q);
 
     var modDiffAB = [];
     for (var indexK = 0; indexK < m; indexK++)
@@ -395,7 +397,7 @@ function mainFunc()
             }
         }
     }
-    getTimeForThree(timeMod,p,m,q);
+    getTime(timeMod,p,m,q);
 
     var D = [];
     var counterTrue = 0;
@@ -422,32 +424,22 @@ function mainFunc()
         }
     }
 
-    console.log(D);
-    getTimeForThree(timeCompare,m,p,q);
-    getTimeForThree(timeSq,counterTrue,1,1);
-    getTimeForThree(timeSq,counterFalse,1,1);
-    getTimeForThree(timeMult,counterFalse,1,1);
+    
+    getTime(timeCompare,m,p,q);
+    getTime(timeSq,counterTrue,1,1);
+    getTime(timeSq,counterFalse,1,1);
+    getTime(timeMult,counterFalse,1,1);
 
     var C = [];
-    var numOfSum = 0;
+    
     for (var indexI = 0; indexI < p; indexI++)
     {  
         C[indexI] = [];
         for (var indexJ = 0; indexJ < q; indexJ++)
         {
-            C[indexI][indexJ] = 0;
-            for (var indexK = 0; indexK < m; indexK++)
-            {
-                var tempC = parseFloat(C[indexI][indexJ]);
-                var tempD = parseFloat(D[indexK][indexI][indexJ]);
-                C[indexI][indexJ] = (tempC + tempD).toFixed(3);
-                tempC = parseFloat(C[indexI][indexJ]);
-                numOfSum++;
-            }
+            C[indexI][indexJ] = summa(D,indexI,indexJ);            
         }
     }
-
-    getTimeForThree(timeSum,numOfSum,1,1);
 
     var ky = (t1/tn).toFixed(3);
     var ey = (ky/procEl).toFixed(3);
@@ -458,7 +450,9 @@ function mainFunc()
     var numOfSq = m*p*q;
     var numOfMult = counterFalse;
     var r = m*p*q;
-    var d = (tn/((numOfSum*timeSum + numOfDiff*timeDiff + numOfMod*timeMod + numOfSq*timeSq + numOfMult*timeMult + numOfCompare*timeCompare)/r)).toFixed(3);
+    var lSum = tn;
+    var lAvg = ((numOfSum*timeSum + numOfDiff*timeDiff + numOfMod*timeMod + numOfSq*timeSq + numOfMult*timeMult + numOfCompare*timeCompare)/r).toFixed(3);
+    var d = (lSum/ lAvg).toFixed(3);
 
     createMainTable(A,B,E,D,C,t1,tn,ky,ey,d);
     addToTable(A,"A",p,m);
@@ -479,26 +473,72 @@ function module(elem)
     return Math.abs(elem).toFixed(3);
 }
 
-function getTime(time,row, col)
+function getTime(time,row, col, pl)
 {
-    t1 += time * row * col;
-    tn += Math.ceil(time * row * col / procEl);
+    t1 += time * row * col * pl;
+    tn += Math.ceil(time * row * col * pl/ procEl);
+    console.log("Time -> " + Math.ceil(time * row * col * pl/ procEl));
+}
+
+function summa(D,indexI,indexJ)
+{
+    var tempSum = [];
+    for (var indexK = 0; indexK < m; indexK++)
+    {
+        tempSum.push(D[indexK][indexI][indexJ]);
+    }
+    return resultSumma(tempSum);
+}
+
+function resultSumma(tempSum)
+{
+    var Cij = [];
+    if (tempSum.length != 1)
+    {    
+        if (tempSum.length > 2 * procEl)
+        {
+            for (var tempInd = 0; tempInd < procEl; tempInd += 2)
+            {
+                var firstSummand = parseFloat(tempSum[tempInd]);
+                var secondSummand = parseFloat(tempSum[tempInd + 1]);
+                var tempRes = (firstSummand + secondSummand).toFixed(3);
+                console.log(tempRes + " сумма");
+                Cij.push(tempRes);
+                t1 += parseInt(timeSum);
+                numOfSum++;
+            }
+            tn += parseInt(timeSum);
+        }
+        
+        else
+        {
+            if (tempSum.length % 2 == 1)
+                Cij.push(tempSum(m - 1));
+
+            var ost = tempSum.length % 2;            
+            for (var tempInd = 0; tempInd < (tempSum.length - ost); tempInd += 2)
+            {
+                var firstSummand = parseFloat(tempSum[tempInd]);
+                var secondSummand = parseFloat(tempSum[tempInd + 1]);
+                var tempRes = (firstSummand + secondSummand).toFixed(3);
+                console.log(tempRes + " сумма");
+                Cij.push(tempRes);
+                t1 += parseInt(timeSum);
+                numOfSum++;
+            }
+            tn += parseInt(timeSum);
+        }
+        return resultSumma(Cij);
+    }
+    else
+    {
+        return tempSum[0];
+    }
 }
 
 function difference(elem1, elem2)
 {    
     return (elem1 - elem2).toFixed(3);
-}
-
-function summa(elem1, elem2)
-{    
-    return (elem1 + elem2);
-}
-
-function getTimeForThree(time,level,row, col)
-{
-    t1 += time * row * col * level;
-    tn += Math.ceil(time * row * col * level/ procEl);
 }
 
 function multiplication(elem1, elem2)
