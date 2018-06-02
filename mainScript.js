@@ -437,7 +437,12 @@ function mainFunc()
         C[indexI] = [];
         for (var indexJ = 0; indexJ < q; indexJ++)
         {
-            C[indexI][indexJ] = summa(D,indexI,indexJ);            
+            var tempSum = [];
+            for (var indexK = 0; indexK < m; indexK++)
+            {
+                tempSum.push(D[indexK][indexI][indexJ]);
+            }
+            C[indexI][indexJ] = summa(tempSum);            
         }
     }
 
@@ -480,17 +485,8 @@ function getTime(time,row, col, pl)
     console.log("Time -> " + Math.ceil(time * row * col * pl/ procEl));
 }
 
-function summa(D,indexI,indexJ)
-{
-    var tempSum = [];
-    for (var indexK = 0; indexK < m; indexK++)
-    {
-        tempSum.push(D[indexK][indexI][indexJ]);
-    }
-    return resultSumma(tempSum);
-}
 
-function resultSumma(tempSum)
+function summa(tempSum)
 {
     var Cij = [];
     if (tempSum.length != 1)
@@ -528,7 +524,7 @@ function resultSumma(tempSum)
             }
             tn += parseInt(timeSum);
         }
-        return resultSumma(Cij);
+        return summa(Cij);
     }
     else
     {
