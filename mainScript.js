@@ -455,9 +455,7 @@ function mainFunc()
     var numOfSq = m*p*q;
     var numOfMult = counterFalse;
     var r = m*p*q;
-    var lSum = tn;
-    var lAvg = ((numOfSum*timeSum + numOfDiff*timeDiff + numOfMod*timeMod + numOfSq*timeSq + numOfMult*timeMult + numOfCompare*timeCompare)/r).toFixed(3);
-    var d = (lSum/ lAvg).toFixed(3);
+    var d = (tn/((numOfSum*timeSum + numOfDiff*timeDiff + numOfMod*timeMod + numOfSq*timeSq + numOfMult*timeMult + numOfCompare*timeCompare)/r)).toFixed(3);
 
     createMainTable(A,B,E,D,C,t1,tn,ky,ey,d);
     addToTable(A,"A",p,m);
@@ -508,10 +506,11 @@ function summa(tempSum)
         
         else
         {
-            if (tempSum.length % 2 == 1)
-                Cij.push(tempSum(m - 1));
+            var ost = tempSum.length % 2;
+            if (ost == 1)
+                Cij.push(tempSum(tempSum.length - 1));
 
-            var ost = tempSum.length % 2;            
+                        
             for (var tempInd = 0; tempInd < (tempSum.length - ost); tempInd += 2)
             {
                 var firstSummand = parseFloat(tempSum[tempInd]);
