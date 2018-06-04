@@ -295,6 +295,10 @@ function addToTableD(D)
 
 function mainFunc()    
 {
+    t1 = 0;
+    tn = 0;
+    procEl;
+    numOfSum = 0;
     var regexp = new RegExp();
     regexp = /([1-9]+)/;
 
@@ -400,7 +404,6 @@ function mainFunc()
     getTime(timeMod,p,m,q);
 
     var D = [];
-    var counterTrue = 0;
     var counterFalse = 0;
     for (var indexK = 0; indexK < m; indexK++)
     {
@@ -412,8 +415,7 @@ function mainFunc()
             {
                 if (modDiffAB[indexK][indexI][indexJ] < E[indexK])
                 {
-                    D[indexK][indexI][indexJ] = squaring(A[indexI][indexK]);  
-                    counterTrue++;     
+                    D[indexK][indexI][indexJ] = squaring(A[indexI][indexK]);      
                 }
             else 
                 {
@@ -424,10 +426,8 @@ function mainFunc()
         }
     }
 
-    
     getTime(timeCompare,m,p,q);
-    getTime(timeSq,counterTrue,1,1);
-    getTime(timeSq,counterFalse,1,1);
+    getTime(timeSq,m,p,q);
     getTime(timeMult,counterFalse,1,1);
 
     var C = [];
@@ -480,9 +480,7 @@ function getTime(time,row, col, pl)
 {
     t1 += time * row * col * pl;
     tn += Math.ceil(time * row * col * pl/ procEl);
-    console.log("Time -> " + Math.ceil(time * row * col * pl/ procEl));
 }
-
 
 function summa(tempSum)
 {
@@ -496,7 +494,6 @@ function summa(tempSum)
                 var firstSummand = parseFloat(tempSum[tempInd]);
                 var secondSummand = parseFloat(tempSum[tempInd + 1]);
                 var tempRes = (firstSummand + secondSummand).toFixed(3);
-                console.log(tempRes + " сумма");
                 Cij.push(tempRes);
                 t1 += parseInt(timeSum);
                 numOfSum++;
@@ -508,20 +505,21 @@ function summa(tempSum)
         {
             var ost = tempSum.length % 2;
             if (ost == 1)
-                Cij.push(tempSum(tempSum.length - 1));
+                Cij.push(tempSum[tempSum.length - 1]);
 
-                        
+            var tempNum = 0;         
             for (var tempInd = 0; tempInd < (tempSum.length - ost); tempInd += 2)
             {
                 var firstSummand = parseFloat(tempSum[tempInd]);
                 var secondSummand = parseFloat(tempSum[tempInd + 1]);
                 var tempRes = (firstSummand + secondSummand).toFixed(3);
-                console.log(tempRes + " сумма");
                 Cij.push(tempRes);
                 t1 += parseInt(timeSum);
+                tempNum ++;
                 numOfSum++;
             }
-            tn += parseInt(timeSum);
+            
+            tn += Math.ceil(parseInt(timeSum) * tempNum/ procEl);
         }
         return summa(Cij);
     }
