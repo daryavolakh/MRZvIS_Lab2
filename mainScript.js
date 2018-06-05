@@ -253,7 +253,7 @@ function addToTable(matr,header,rows,columns)
     {
         for (var tempCol = 0; tempCol < columns; tempCol++)
         {
-            document.getElementById(header + "." + rows + "." + (tempCol + 1)).innerHTML = matr[tempCol];
+            document.getElementById(header + "." + rows + "." + (tempCol + 1)).innerHTML = matr[0][tempCol];
         }
     }
     else 
@@ -267,6 +267,16 @@ function addToTable(matr,header,rows,columns)
         }
     }
 }
+
+function addToTableE(E)
+{
+    var columns = m;
+    for (var tempCol = 0; tempCol < columns; tempCol++)
+        {
+            document.getElementById( "E.1." + (tempCol + 1)).innerHTML = E[tempCol];
+        }
+}
+
 
 function addToTableD(D)
 {
@@ -453,14 +463,14 @@ function mainFunc()
     var numOfCompare = m*p*q;
     var numOfMod = p*m + m*q + m*p*q;
     var numOfSq = m*p*q;
-    var numOfMult = counterFalse;
+    var numOfMult = 2 * counterFalse;
     var r = m*p*q;
     var d = (tn/((numOfSum*timeSum + numOfDiff*timeDiff + numOfMod*timeMod + numOfSq*timeSq + numOfMult*timeMult + numOfCompare*timeCompare)/r)).toFixed(3);
 
     createMainTable(A,B,E,D,C,t1,tn,ky,ey,d);
     addToTable(A,"A",p,m);
     addToTable(B,"B",m,q);    
-    addToTable(E,"E",1,m);
+    addToTableE(E);
     addToTableD(D);
     addToTable(C,"C",p,q);
     addResults(t1,tn,ky,ey,d);
