@@ -337,6 +337,31 @@ function mainFunc()
     timeSum = numbers.elements[9].value;  
 
     timeSum = parseInt(timeSum);
+    var A = [];
+    for (var index1 = 0; index1 < p; index1++)
+    {
+        A[index1] = [];
+        for (var index2 = 0; index2 < m; index2++)
+        {
+            A[index1][index2] = getRandom().toFixed(3);
+        }
+    }
+
+    var B = [];
+    for (var index1 = 0; index1 < m; index1++)
+    {
+        B[index1] = [];
+        for (var index2 = 0; index2 < q; index2++)
+        {
+            B[index1][index2] = getRandom().toFixed(3);
+        }
+    }
+
+    var E = [];
+    for (var index = 0; index < m; index++)
+    {
+        E[index] = getRandom().toFixed(3);
+    }
 
     var modA = [];
     for (var index1 = 0; index1 < p; index1++)
@@ -350,7 +375,6 @@ function mainFunc()
     getTime(timeMod,p,m,1);
 
     var modB = [];
-    
 
     for (var index1 = 0; index1 < m; index1++)
     {
