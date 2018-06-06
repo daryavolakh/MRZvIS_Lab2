@@ -3,6 +3,8 @@
 */
 
 
+
+
 var t1 = 0;
 var tn = 0;
 var procEl;
@@ -334,31 +336,7 @@ function mainFunc()
     var timeMult = numbers.elements[8].value;
     timeSum = numbers.elements[9].value;  
 
-    var A = [];
-    for (var index1 = 0; index1 < p; index1++)
-    {
-        A[index1] = [];
-        for (var index2 = 0; index2 < m; index2++)
-        {
-            A[index1][index2] = getRandom().toFixed(3);
-        }
-    }
-
-    var B = [];
-    for (var index1 = 0; index1 < m; index1++)
-    {
-        B[index1] = [];
-        for (var index2 = 0; index2 < q; index2++)
-        {
-            B[index1][index2] = getRandom().toFixed(3);
-        }
-    }
-
-    var E = [];
-    for (var index = 0; index < m; index++)
-    {
-        E[index] = getRandom().toFixed(3);
-    }
+    timeSum = parseInt(timeSum);
 
     var modA = [];
     for (var index1 = 0; index1 < p; index1++)
@@ -372,6 +350,7 @@ function mainFunc()
     getTime(timeMod,p,m,1);
 
     var modB = [];
+    
 
     for (var index1 = 0; index1 < m; index1++)
     {
@@ -396,6 +375,7 @@ function mainFunc()
             }
         }
     }
+    
     getTime(timeDiff,p,m,q);
 
     var modDiffAB = [];
@@ -411,6 +391,7 @@ function mainFunc()
             }
         }
     }
+    
     getTime(timeMod,p,m,q);
 
     var D = [];
@@ -435,7 +416,6 @@ function mainFunc()
             }
         }
     }
-
     getTime(timeCompare,m,p,q);
     getTime(timeSq,m,p,q);
     getTime(timeMult,counterFalse,1,1);
@@ -459,13 +439,13 @@ function mainFunc()
     var ky = (t1/tn).toFixed(3);
     var ey = (ky/procEl).toFixed(3);
 
-    var numOfDiff = m*p*q;
-    var numOfCompare = m*p*q;
-    var numOfMod = p*m + m*q + m*p*q;
+    var numOfDiff = 2*m*p*q;
+    var numOfCompare = 2*m*p*q;
+    var numOfMod = p*m + m*q + m*p* q;
     var numOfSq = m*p*q;
-    var numOfMult = 2 * counterFalse;
+    var numOfMult = 2*counterFalse;
     var r = m*p*q;
-    var d = (tn/((numOfSum*timeSum + numOfDiff*timeDiff + numOfMod*timeMod + numOfSq*timeSq + numOfMult*timeMult + numOfCompare*timeCompare)/r)).toFixed(3);
+    var d = (tn/((2*numOfSum*timeSum + numOfDiff*timeDiff + numOfMod*timeMod + numOfSq*timeSq + numOfMult*timeMult + numOfCompare*timeCompare)/r)).toFixed(3);
 
     createMainTable(A,B,E,D,C,t1,tn,ky,ey,d);
     addToTable(A,"A",p,m);
@@ -499,23 +479,27 @@ function summa(tempSum)
     {    
         if (tempSum.length > 2 * procEl)
         {
-            for (var tempInd = 0; tempInd < procEl; tempInd += 2)
+            for (var tempInd = 0; tempInd < 2 * procEl; tempInd += 2)
             {
                 var firstSummand = parseFloat(tempSum[tempInd]);
                 var secondSummand = parseFloat(tempSum[tempInd + 1]);
                 var tempRes = (firstSummand + secondSummand).toFixed(3);
                 Cij.push(tempRes);
-                t1 += parseInt(timeSum);
-                numOfSum++;
+                t1 += timeSum;
+                numOfSum++;              
             }
-            tn += parseInt(timeSum);
+            tn += timeSum;
+            for (var tempInd = 2 * procEl; tempInd < tempSum.length; tempInd ++)
+                Cij.push(tempSum[tempInd]);
         }
         
         else
         {
             var ost = tempSum.length % 2;
             if (ost == 1)
+            {
                 Cij.push(tempSum[tempSum.length - 1]);
+            }
 
             var tempNum = 0;         
             for (var tempInd = 0; tempInd < (tempSum.length - ost); tempInd += 2)
@@ -524,18 +508,18 @@ function summa(tempSum)
                 var secondSummand = parseFloat(tempSum[tempInd + 1]);
                 var tempRes = (firstSummand + secondSummand).toFixed(3);
                 Cij.push(tempRes);
-                t1 += parseInt(timeSum);
+                t1 += timeSum;
                 tempNum ++;
-                numOfSum++;
-            }
-            
-            tn += Math.ceil(parseInt(timeSum) * tempNum/ procEl);
+                numOfSum++;                
+            }           
+            tn += Math.ceil(timeSum * tempNum/ procEl);     
         }
         return summa(Cij);
     }
     else
     {
         return tempSum[0];
+
     }
 }
 
